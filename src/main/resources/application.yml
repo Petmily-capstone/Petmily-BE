@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: local
+  config:
+    import: optional:file:.env[.properties]   # .env에서 환경변수 주입
+  jackson:
+    time-zone: Asia/Seoul
+    default-property-inclusion: non_null       # null 필드는 JSON에서 제외
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+# JWT — secret은 .env, 만료시간(비민감 상수)만 원문
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiration: 3600000       # 1시간 (ms)
+  refresh-token-expiration: 1209600000   # 14일 (ms)

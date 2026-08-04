@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update            # Flyway 미사용 → ddl-auto로 스키마 관리
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100   # N+1 완화
+    open-in-view: false           # OSIV 끔 (트랜잭션 경계 명확히)
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:5173
+
+# FastAPI AI 서버 (WebClient)
+ai-server:
+  base-url: ${AI_SERVER_URL:http://localhost:8000}
+  connect-timeout: 3000          # ms
+  read-timeout: 30000            # ms (증상 분석은 느릴 수 있음)
