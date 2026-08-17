@@ -22,7 +22,7 @@ public class AuthController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PostMapping("/reissue")
+    @PostMapping("/refresh")
     public ApiResponse<LoginResponse> reissue(@RequestBody ReissueRequest request) {
         LoginResponse response = authService.reissue(request.getRefreshToken());
         return ApiResponse.onSuccess(response);
