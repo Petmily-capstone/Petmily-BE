@@ -1,4 +1,4 @@
-package com.petmily.domain.user.dto;
+package com.petmily.domain.user.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
