@@ -6,6 +6,7 @@ import com.petmily.global.apiPayload.code.GeneralErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,15 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ApiResponse<Void>> handleConstraintViolation(ConstraintViolationException e) {
         return ResponseEntity.status(GeneralErrorCode.INVALID_INPUT_VALUE.getStatus())
                 .body(ApiResponse.onFailure(GeneralErrorCode.INVALID_INPUT_VALUE, e.getMessage()));
+    }
+
+    // 잘못된 정렬/필터 프로퍼티 (예: 존재하지 않는 sort 컬럼)
+    @ExceptionHandler(PropertyReferenceException.class)
+    protected ResponseEntity<ApiResponse<Void>> handlePropertyReference(PropertyReferenceException e) {
+        log.warn("PropertyReferenceException: {}", e.getMessage());
+        return ResponseEntity.status(GeneralErrorCode.INVALID_INPUT_VALUE.getStatus())
+                .body(ApiResponse.onFailure(GeneralErrorCode.INVALID_INPUT_VALUE,
+                        "정렬/필터 파라미터가 올바르지 않습니다: " + e.getPropertyName()));
     }
 
     // DB 무결성 위반
