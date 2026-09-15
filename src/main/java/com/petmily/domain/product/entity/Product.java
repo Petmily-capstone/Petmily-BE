@@ -1,5 +1,6 @@
 package com.petmily.domain.product.entity;
 
+import com.petmily.domain.product.enums.Partner;
 import com.petmily.domain.product.enums.ProductCategory;
 import com.petmily.domain.product.enums.TargetSpecies;
 import com.petmily.global.entity.BaseTimeEntity;
@@ -50,9 +51,22 @@ public class Product extends BaseTimeEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    // === 제휴 연동 대비 필드 (현재는 nullable, 미사용) ===
+
+    @Column(name = "purchase_url", columnDefinition = "TEXT")
+    private String purchaseUrl;               // 제휴/외부 구매 링크
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "partner", length = 20)
+    private Partner partner;                   // 판매처 (COUPANG/NAVER/ETC)
+
+    @Column(name = "external_product_id", length = 100)
+    private String externalProductId;          // 외부몰 상품 ID (중복 임포트 방지)
+
     @Builder
     private Product(String name, String brand, ProductCategory category, TargetSpecies targetSpecies,
-                    int price, String imageUrl, String description) {
+                    int price, String imageUrl, String description,
+                    String purchaseUrl, Partner partner, String externalProductId) {
         this.name = name;
         this.brand = brand;
         this.category = category;
@@ -60,6 +74,9 @@ public class Product extends BaseTimeEntity {
         this.price = price;
         this.imageUrl = imageUrl;
         this.description = description;
+        this.purchaseUrl = purchaseUrl;
+        this.partner = partner;
+        this.externalProductId = externalProductId;
     }
 
     public static Product create(String name, String brand, ProductCategory category, TargetSpecies targetSpecies,
